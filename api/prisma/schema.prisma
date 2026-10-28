@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  idUsuario         Int                   @id @default(autoincrement()) @map("id_usuario")
+  nome              String                @db.VarChar(100)
+  email             String                @unique @db.VarChar(100)
+  senha             String                @db.VarChar(100)
+  movimentacoes     MovimentacaoEstoque[]
+
+  @@map("usuario")
+}
+
+model Disco {
+  idDisco             Int                   @id @default(autoincrement()) @map("id_disco")
+  titulo              String                @db.VarChar(150)
+  artista             String                @db.VarChar(100)
+  genero              String                @db.VarChar(50)
+  precoCusto          Decimal               @map("preco_custo") @db.Decimal(10, 2)
+  precoVenda          Decimal               @map("preco_venda") @db.Decimal(10, 2)
+  quantidadeEstoque   Int                   @map("quantidade_estoque")
+  estoqueMinimo       Int                   @map("estoque_minimo")
+  movimentacoes       MovimentacaoEstoque[]
+
+  @@map("disco")
+}
+
+model MovimentacaoEstoque {
+  idMovimentacao   Int      @id @default(autoincrement()) @map("id_movimentacao")
+  idDisco          Int      @map("id_disco")
+  idUsuario        Int      @map("id_usuario")
+  tipoMovimentacao String   @map("tipo_movimentacao") @db.Enum("entrada", "saida")
+  quantidade       Int
+  dataMovimentacao DateTime @map("data_movimentacao") @db.Date
+  observacao       String   @db.VarChar(250)
+  disco            Disco    @relation(fields: [idDisco], references: [idDisco])
+  usuario          Usuario  @relation(fields: [idUsuario], references: [idUsuario])
+
+  @@index([idDisco], map: "idx_movimentacao_id_disco")
+  @@index([idUsuario], map: "idx_movimentacao_id_usuario")
+  @@map("movimentacao_estoque")
+}
