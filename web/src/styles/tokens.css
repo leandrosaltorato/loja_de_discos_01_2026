@@ -1,0 +1,23 @@
+:root {
+  --paper: #f4f4f2;
+  --surface: #ffffff;
+  --field: #ffffff;
+  --ink: #1f2124;
+  --ink-2: #565a60;
+  --ink-3: #858a91;
+  --line: #e3e4e2;
+  --line-2: #cfd1ce;
+
+  --accent: #b4301e;
+  --ok: #3f6b3c;
+  --warn: #9a5b06;
+  --danger: #b4301e;
+  --warn-bg: #fbf0d9;
+  --danger-bg: #f9e4e0;
+
+  --sans: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --radius: 6px;
+  --gap: 1.5rem;
+  --content: 1120px;
+}

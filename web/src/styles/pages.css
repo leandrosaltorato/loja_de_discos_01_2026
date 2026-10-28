@@ -1,0 +1,138 @@
+.painel {
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+}
+.painel > h2 {
+  margin-bottom: 1rem;
+}
+.painel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.toolbar input {
+  max-width: 26rem;
+}
+.toolbar .muted {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+.dash {
+  display: grid;
+  gap: 2rem;
+}
+
+.figuras {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line-2);
+}
+.figura {
+  padding: 1rem 1.25rem;
+}
+.figura + .figura {
+  border-left: 1px solid var(--line-2);
+}
+.figura:first-child {
+  padding-left: 0;
+}
+.figura-valor {
+  font-family: var(--sans);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.figura-rotulo {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.figura-detalhe {
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+.figura-alerta .figura-valor {
+  color: var(--danger);
+}
+
+.dois {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
+}
+.secao {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  min-width: 0;
+}
+.secao-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line-2);
+}
+.secao-head a {
+  font-size: 0.88rem;
+}
+
+.lista-reposicao,
+.barras {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+.rep-linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+}
+.barras li {
+  display: grid;
+  grid-template-columns: 6rem 1fr 2rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .split,
+  .dois {
+    grid-template-columns: 1fr;
+  }
+  .figuras {
+    grid-template-columns: 1fr 1fr;
+  }
+  .figura:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .figura:nth-child(n + 3) {
+    border-top: 1px solid var(--line-2);
+  }
+}

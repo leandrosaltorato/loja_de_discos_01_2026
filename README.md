@@ -1,34 +1,93 @@
-# Loja de vinhos: Node.js, Prisma e MySQL
+# Vinyl Control
 
-Schema transcrito do DER enviado: `USUARIO`, `DISCO` e `MOVIMENTACAO_ESTOQUE`, com campos, tipos, chave única e relações representados no Prisma.
+Sistema para loja de discos de vinil: cadastro do acervo, controle de estoque e registro de vendas e reposições.
 
-## Subir e iniciar
+O projeto tem duas partes independentes:
 
-Requer Node.js e Docker Compose.
+- **`web/`**: o front-end (Vite + JavaScript puro).
+- **`backend/`**: a API (Node.js + Express).
+
+## Estrutura
+
+```
+vinyl-control/
+├── web/
+│   ├── index.html
+│   └── src/
+│       ├── api/          
+│       ├── components/
+│       ├── pages/        
+│       ├── state/        
+│       ├── styles/
+│       └── utils/
+└── backend/
+    ├── server.js
+    ├── .env
+    ├── prisma/
+    └── src/
+        ├── routes/
+        ├── controllers/
+        ├── services/
+        └── db/
+```
+
+## Como rodar
+
+Use dois terminais, um para cada parte
+
+### 1. Backend
 
 ```bash
-npm install
-docker compose up -d
-npm run db:generate
-npm run db:push
-npm start
+cd backend
+npm i
 ```
 
-`DATABASE_URL` e as credenciais locais estão em `.env`. Altere as senhas antes de usar fora do ambiente local. `db:push` cria/ajusta o banco conforme o schema.
+Crie o arquivo `.env` na pasta `backend` :
 
-## Login
-
-`POST /auth/login`
-
-```json
-{ "email": "usuario@exemplo.com", "senha": "sua-senha" }
+```
+PORT=3000
+DATABASE_URL=...
 ```
 
-Retorna os dados básicos do usuário quando as credenciais conferem, ou HTTP 401. Não há cadastro nem geração de token. O serviço compara hashes bcrypt quando a coluna `senha` contém um hash bcrypt; também aceita igualdade direta para compatibilidade com registros legados descritos apenas pelo DER. Para produção, cadastre/importe senhas como hashes bcrypt.
+Depois inicie a API:
 
-## Observações do DER
+```bash
+npm run dev
+```
 
-- Relações: um usuário pode ter várias movimentações; cada movimentação referencia um usuário e um disco; um disco pode ter várias movimentações.
-- O desenho não informa nulabilidade nem regras `ON DELETE`; campos foram definidos como obrigatórios e as relações usam o comportamento padrão do Prisma/MySQL.
-- `tipo_movimentacao` foi representado como ENUM `entrada`/`saida`, conforme os valores mostrados.
-- O DER rotula as senhas como `VARCHAR(100)`, mas não especifica se são texto puro ou hash. O serviço dá suporte a bcrypt sem mudar esse tipo.
+Quando aparecer `API disponível na porta 3000`, a API está no ar
+
+### 2. Front-end
+
+```bash
+cd web
+npm i
+npm run dev
+```
+
+Abra o endereço que o Vite mostrar no terminal (normalmente `http://localhost:5173`).
+
+## Como o front fala com o backend
+
+O front chama o backend diretamente, em `http://localhost:3000` por padrão, sem precisar de `.env`
+
+### Rotas do backend
+
+| Recurso | Rota base | Rotas |
+| --- | --- | --- |
+| Login | `/auth` | `POST /login` |
+| Discos | `/disco` | `POST /cadastrar`, `GET /listar`, `GET /buscar/:id`, `PUT /atualizar/:id`, `DELETE /excluir/:id` |
+| Movimentações | `/movimentacaoestoque` | mesmas rotas de `/disco` |
+| Usuários | `/usuario` | mesmas rotas de `/disco` |
+
+Os caminhos usados pelo front ficam no objeto `ROTAS`, no topo de `web/src/api/http.js`
+
+### Nomes dos campos
+
+A tradução entre os campos do front e os do backend fica em `web/src/api/mapeamento.js`. Se algum campo do backend tiver outro nome, altere só o valor correspondente nesse arquivo
+
+
+## Tecnologias
+
+- Front-end: Vite, JavaScript, CSS, fonte Poppins
+- Backend: Node.js, Express, Prisma
